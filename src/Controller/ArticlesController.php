@@ -6,17 +6,13 @@ use App\Repository\ArticlesRepository;
 use App\Repository\CategoriesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 // Articlerepository&CategoriesRepository pour recuperer ServiceEntityRepository
-// Normilizer pour transformer mes objet en tableau associatif
 // group pour tagger les entités à normaliser (étiquetté dans l'entitée)
-// Json_encode pour transformer mon tableau associatif en JSON
-// dd pour dump $json et $articles
-// Response du $json, status 200, précision du content-Type en Json
+// Json pour transformer mon tableau associatif en JSON
+
 
 class ArticlesController extends AbstractController
 {
@@ -27,7 +23,7 @@ class ArticlesController extends AbstractController
     }
 
     #[Route('/articles', name: 'app_articles')]
-    public function ArticleNormalize(ArticlesRepository $articlesRepository, NormalizerInterface $normalizer)
+    public function ArticleNormalize(ArticlesRepository $articlesRepository): JsonResponse
     {
 
         $articles = $articlesRepository->findAll();
@@ -45,41 +41,37 @@ class ArticlesController extends AbstractController
     }
 
     #[Route('/articles/console', name: 'app_console')]
-    public function ConsoleNormalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository, NormalizerInterface $normalizer)
+    public function ConsoleNormalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository): JsonResponse
     {
-        $console = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(1)));
-        $consoleNormalises = $normalizer->normalize($console, null, ['groups' => 'article:read']);
+        $consoles = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(1)));
+        $consolesNormalises = [];
+        foreach ($consoles as $console) {
+            $consolesNormalises[] = $this->articleToArray($console);
+        }
         $arrayJson = [
             'isLogged' => true,
             'email' => 'test@test.fr',
             'userId' => 2,
-            'articles' => $consoleNormalises
+            'articles' => $consolesNormalises
         ];
-        $json = json_encode($arrayJson);
-        dd($json, $console);
-
-
-        $response = new Response($json, 200, ["content-Type" => "application/json"]);
-        return $response;
+        return $this->json($arrayJson);
     }
 
     #[Route('/articles/jeux', name: 'app_jeux')]
-    public function Console2Normalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository, NormalizerInterface $normalizer)
+    public function Console2Normalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository): JsonResponse
     {
-        $console = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(2)));
-        $consoleNormalises = $normalizer->normalize($console, null, ['groups' => 'article:read']);
+        $jeux = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(2)));
+        $jeuxNormalises = [];
+        foreach ($jeux as $jeu) {
+            $jeuxNormalises[] = $this->articleToArray($jeu);
+        }
         $arrayJson = [
             'isLogged' => true,
             'email' => 'test@test.fr',
             'userId' => 2,
-            'articles' => $consoleNormalises
+            'articles' => $jeuxNormalises
         ];
-        $json = json_encode($arrayJson);
-        dd($json, $console);
-
-
-        $response = new Response($json, 200, ["content-Type" => "application/json"]);
-        return $response;
+        return $this->json($arrayJson);
     }
 
     public function articleToArray($articles)
