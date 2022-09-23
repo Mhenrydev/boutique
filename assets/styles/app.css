@@ -1,3 +1,34 @@
 body {
     background-color: lightgray;
 }
+
+a {
+    text-decoration: none;
+}
+
+.header-1 {
+    background-color: black;
+    color: white;
+}
+
+.header-2 {
+    background-color: DarkSlateGray;;
+    color: white;
+}
+
+.card {
+    object-fit: contain;
+}
+
+.card-img-top {
+    height:80%;
+}
+
+.img-line {
+    width: 33%;
+}
+
+.shop {
+    background-color: gainsboro;
+    padding: 1em 3em;
+}
