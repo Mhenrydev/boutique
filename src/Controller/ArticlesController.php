@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 // Articlerepository&CategoriesRepository pour recuperer ServiceEntityRepository
@@ -24,19 +25,17 @@ class ArticlesController extends AbstractController
     {
 
         $articles = $articlesRepository->findAll();
-        $articlesNormalises = $normalizer->normalize($articles, null, ['groups' => 'article:read']);
+        $articlesNormalises = [];
+        foreach ($articles as $article) {
+            $articlesNormalises[] = $this->articleToArray($article);
+        }
         $arrayJson = [
             'isLogged' => true,
             'email' => 'test@test.fr',
             'userId' => 2,
             'articles' => $articlesNormalises
         ];
-        $json = json_encode($arrayJson);
-        dd($json, $articles);
-
-
-        $response = new Response($json, 200, ["content-Type" => "application/json"]);
-        return $response;
+        return $this->json($arrayJson);
     }
 
     #[Route('/articles/console', name: 'app_console')]
@@ -75,5 +74,16 @@ class ArticlesController extends AbstractController
 
         $response = new Response($json, 200, ["content-Type" => "application/json"]);
         return $response;
+    }
+
+    public function articleToArray($articles)
+    {
+        return  [
+            'id' => $articles->getId(),
+            'nameArticle' => $articles->getNameArticle(),
+            'price' => $articles->getPrice(),
+            'rating' => $articles->getRating(),
+            'image' => $articles->getImage()
+        ];
     }
 }
