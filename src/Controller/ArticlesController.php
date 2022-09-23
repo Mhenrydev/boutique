@@ -31,19 +31,17 @@ class ArticlesController extends AbstractController
     {
 
         $articles = $articlesRepository->findAll();
-        $articlesNormalises = $normalizer->normalize($articles, null, ['groups' => 'article:read']);
+        $articlesNormalises = [];
+        foreach ($articles as $article) {
+            $articlesNormalises[] = $this->articleToArray($article);
+        }
         $arrayJson = [
             'isLogged' => true,
             'email' => 'test@test.fr',
             'userId' => 2,
             'articles' => $articlesNormalises
         ];
-        $json = json_encode($arrayJson);
-        dd($json, $articles);
-
-
-        $response = new Response($json, 200, ["content-Type" => "application/json"]);
-        return $response;
+        return $this->json($arrayJson);
     }
 
     #[Route('/articles/console', name: 'app_console')]
@@ -84,55 +82,14 @@ class ArticlesController extends AbstractController
         return $response;
     }
 
-    #[Route('article/getAllArticles', name:'allArticles')]
-    function getAllArticles(): JsonResponse
+    public function articleToArray($articles)
     {
-        return $this->json([
-            'isLogged' => true,
-            'articles' => [
-                [
-                    'id' => 1,
-                    'nameArticle' => 'Console PS4',
-                    'price' => 299,
-                    'image' => 'console-ps4.jpg',
-                    'description' => 'Pour l\'achat d\'une console PS4 ou d\'un accessoire de la sélection profitez du jeu Destiny 2 offert si vous l\'ajoutez au panier !',
-                    'nameCategory' => 'console',
-                    'type' => 'new',
-                    'rating' => '4' 
-                ],
-                [
-                    'id' => 2,
-                    'nameArticle' => 'Console Wii U',
-                    'price' => 489,
-                    'image' => 'Console-Wii-U.jpg',
-                    'description' => 'Pack Nintendo Premium Console Wii U + Mario Kart 8 + Code Splatoon',
-                    'nameCategory' => 'console',
-                    'type' => 'new',
-                    'rating' => '4'
-                ],
-                [
-                    'id' => 4,
-                    'nameArticle' => 'Assassin\'s Creed PS4',
-                    'price' => 56,
-                    'image' => 'Aain-s-Creed-Origins-PS4.jpg',
-                    'description' => 'Un nouvel opus de la saga Assassin\'s Creed qui regorge de nouveautés techniques.',
-                    'nameCategory' => 'game',
-                    'type' => 'new',
-                    'rating' => '4'
-                ],
-                [
-                    'id' => 5,
-                    'nameArticle' => 'Dragon Ball Fighter',
-                    'price' => 55,
-                    'image' => 'Dragon-Ball-Fighter-Z-Xbox-One.jpg',
-                    'description' => 'DRAGON BALL FighterZ reprend les éléments qui ont fait le succès de la série DRAGON BALL : des combats spectaculaires avec des combattants aux pouvoirs incroyables.',
-                    'nameCategory' => 'game',
-                    'type' => 'new',
-                    'rating' => '4'
-                ]
-            ],
-            'email' => 'bob@p7.fr',
-            'idUser' => 1
-        ]);
+        return  [
+            'id' => $articles->getId(),
+            'nameArticle' => $articles->getNameArticle(),
+            'price' => $articles->getPrice(),
+            'rating' => $articles->getRating(),
+            'image' => $articles->getImage()
+        ];
     }
 }

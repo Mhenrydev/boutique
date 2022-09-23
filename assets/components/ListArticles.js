@@ -15,8 +15,10 @@ class ListArticles extends React.Component {
         />);
 
         return (
-            <div className='card-group mb-3'>
-                {articles}
+            <div className='container-fluid mb-3'>
+                <div className='row'>
+                    {articles}
+                </div>
             </div>
         );
     }

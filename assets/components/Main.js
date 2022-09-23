@@ -92,7 +92,7 @@ class Main extends React.Component {
     setAllArticles() {
         const request = new XMLHttpRequest();
         try {
-            request.open('GET', '/article/getAllArticles');
+            request.open('GET', '/articles');
             request.responseType = 'json';
             request.addEventListener('load', (event) => {
                 this.setState({
