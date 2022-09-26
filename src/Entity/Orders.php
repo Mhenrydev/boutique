@@ -27,6 +27,9 @@ class Orders
     #[ORM\OneToMany(mappedBy: 'Orders', targetEntity: Orderslines::class)]
     private Collection $orderslines;
 
+    #[ORM\Column]
+    private ?int $userId = null;
+
     public function __construct()
     {
         $this->orderslines = new ArrayCollection();
@@ -66,7 +69,7 @@ class Orders
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(?\DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
 
@@ -99,6 +102,18 @@ class Orders
                 $ordersline->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(int $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }
