@@ -17,7 +17,7 @@ class OrderLine extends React.Component {
                 <div className='col-6 d-sm-none my-3 text-center'>Quantité </div>
                 <input
                     type="text"
-                    name="quantity[]"
+                    name={'quantity' + this.props.lineNb}
                     value={this.props.line.quantity}
                     className='col-6 col-sm-1 my-3 text-center'
                     onChange={this.props.handleChangeQuantity.bind(null, this.props.line.idArticle)}
@@ -34,7 +34,11 @@ class OrderLine extends React.Component {
                         </svg>
                     </div>
                 </div>
-                <input type="hidden" name="idArticle[]" value={this.props.line.idArticle} />
+                <input
+                    type="hidden"
+                    name={'idArticle' + this.props.lineNb}
+                    value={this.props.line.idArticle}
+                />
             </div>
         );
     }
