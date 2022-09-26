@@ -7,12 +7,17 @@ class ShoppingCart extends React.Component {
     }
 
     render() {
-        const orderLines = this.props.orderLines.lines.map(line => <OrderLine
-            key={line.idArticle}
-            line={line}
-            handleDeleteOrderLine={this.props.handleDeleteOrderLine}
-            handleChangeQuantity={this.props.handleChangeQuantity}
-        />);
+        let i = 0;
+        const orderLines = this.props.orderLines.lines.map(line => {
+            i++;
+            return <OrderLine
+                key={line.idArticle}
+                line={line}
+                lineNb={i}
+                handleDeleteOrderLine={this.props.handleDeleteOrderLine}
+                handleChangeQuantity={this.props.handleChangeQuantity}
+            />
+        });
         return (
             <div>
                 <div className='fs-1 shop text-center text-sm-start'>Shopping Cart</div>
@@ -21,7 +26,7 @@ class ShoppingCart extends React.Component {
                     action="order"
                     className='container-fluid mx-0 px-0 mx-sm-3 my-5'
                 >
-                    { this.props.amount > 0 &&
+                    {this.props.amount > 0 &&
                         <div className='row fw-bold py-2 d-none d-sm-flex'>
                             <div className='col-3'></div>
                             <div className='col-2 text-center'>Nom de l'article</div>
