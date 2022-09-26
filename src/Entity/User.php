@@ -29,6 +29,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $pseudo = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $name_user = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 5)]
+    private ?string $postal_code = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $city = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,5 +115,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getNameUser(): ?string
+    {
+        return $this->name_user;
+    }
+
+    public function setNameUser(string $name_user): self
+    {
+        $this->name_user = $name_user;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postal_code;
+    }
+
+    public function setPostalCode(string $postal_code): self
+    {
+        $this->postal_code = $postal_code;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
     }
 }
