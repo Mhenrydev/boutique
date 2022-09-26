@@ -43,6 +43,7 @@ class ShoppingCart extends React.Component {
                     </div>
                     <input type="submit" className='btn btn-primary col-12 col-sm-2 mx-0' value="Valider la commande" />
                     <input type="hidden" name="user_id" value={this.props.userId} />
+                    <input type="hidden" name="items" value={this.props.items} />
                 </form>
             </div>
         );

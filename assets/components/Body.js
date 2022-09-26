@@ -45,6 +45,7 @@ class Body extends React.Component {
                             orderLines={this.props.state.orderLines}
                             userId={this.props.state.userId}
                             amount={this.props.state.amount}
+                            items={this.props.state.items}
                             handleDeleteOrderLine={this.props.handleDeleteOrderLine}
                             handleChangeQuantity = {this.props.handleChangeQuantity}
                         />

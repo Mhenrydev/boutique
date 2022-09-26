@@ -10,16 +10,16 @@ class Header extends React.Component {
             return (
                 <div className='text-center'>
                     Bienvenue {this.props.email}, vous pouvez vous
-                    <a href='#' className='text-success'> déconnecter</a>.
+                    <a href='logout' className='text-success'> déconnecter</a>.
                 </div>
             );
         }
         return (
             <div className='text-center'>
                 Pour commander 
-                <a href='#' className='text-success'> connectez </a> 
+                <a href='login' className='text-success'> connectez </a> 
                 vous ou bien 
-                <a href='#' className='text-success'> créez un compte</a>.
+                <a href='register' className='text-success'> créez un compte</a>.
             </div>
         )
     }
