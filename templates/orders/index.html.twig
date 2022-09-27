@@ -50,12 +50,12 @@
 	</div>
     <h1 class="shop text-center text-sm-start">Zone de paiement</h1>
     <br><br>
-    <form method='post' action='order/delete'>
+    <form method='get' action='order/delete'>
         <input 
             type="submit" 
             value="Annuler la commande" 
             class="btn btn-danger mx-0 mx-sm-3 my-3 col-12 col-sm-2"
         >
-        <input type="hidden" value={{idOrder}}>
+        <input type="hidden" name="id" value={{idOrder}}>
     </form>
 {% endblock %}
