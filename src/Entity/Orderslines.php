@@ -20,6 +20,7 @@ class Orderslines
     private ?Articles $Article = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderslines')]
+    #[ORM\JoinColumn(onDelete:"CASCADE")] 
     private ?Orders $Orders = null;
 
     public function getId(): ?int
