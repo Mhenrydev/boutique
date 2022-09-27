@@ -52,4 +52,15 @@ class OrdersController extends AbstractController
             'amount' => $amount
         ]);
     }
+
+    #[Route('/order/delete/{id}', name: 'app_order_delete')]
+    public function deleteOrder(Orders $order, ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $em->remove($order);
+        $em->flush();
+
+
+        return $this->redirectToRoute('app_home');
+    }
 }
