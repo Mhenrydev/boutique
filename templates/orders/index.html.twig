@@ -42,20 +42,16 @@
 		</div>
 		<div class='row header-2 py-3'>
 			<div class='text-center'>
-				Bienvenue {{email}}, vous pouvez vous
+				Bienvenue
+				{{email}}, vous pouvez vous
 				<a href='logout' class='text-success'>
 					déconnecter</a>.
 			</div>
 		</div>
 	</div>
-    <h1 class="shop text-center text-sm-start">Zone de paiement</h1>
-    <br><br>
-    <form method='get' action='order/delete'>
-        <input 
-            type="submit" 
-            value="Annuler la commande" 
-            class="btn btn-danger mx-0 mx-sm-3 my-3 col-12 col-sm-2"
-        >
-        <input type="hidden" name="id" value={{idOrder}}>
-    </form>
+	<h1 class="shop text-center text-sm-start">Zone de paiement</h1>
+	<br><br>
+	<button class="btn btn-danger mx-0 mx-sm-3 my-3 col-12 col-sm-2">
+		<a href={{ "order/delete/#{idOrder}" }}>Annuler la commande</a>
+	</button>
 {% endblock %}

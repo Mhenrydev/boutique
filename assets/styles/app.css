@@ -2,8 +2,9 @@ body {
     background-color: lightgray;
 }
 
-a {
+a, a:visited {
     text-decoration: none;
+    color: black;
 }
 
 .header-1 {
