@@ -7,13 +7,13 @@ class ShoppingCart extends React.Component {
     }
 
     render() {
-        let i = 0;
+        let lineNb = 0;
         const orderLines = this.props.orderLines.lines.map(line => {
-            i++;
+            lineNb++;
             return <OrderLine
                 key={line.idArticle}
                 line={line}
-                lineNb={i}
+                lineNb={lineNb}
                 handleDeleteOrderLine={this.props.handleDeleteOrderLine}
                 handleChangeQuantity={this.props.handleChangeQuantity}
             />
@@ -48,7 +48,7 @@ class ShoppingCart extends React.Component {
                     </div>
                     <input type="submit" className='btn btn-primary col-12 col-sm-2 mx-0' value="Valider la commande" />
                     <input type="hidden" name="user_id" value={this.props.userId} />
-                    <input type="hidden" name="items" value={this.props.items} />
+                    <input type="hidden" name="lineNb" value={lineNb} />
                 </form>
             </div>
         );
