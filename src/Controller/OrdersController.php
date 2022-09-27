@@ -21,8 +21,10 @@ class OrdersController extends AbstractController
         $em = $doctrine->getManager();
         $rep = $doctrine->getRepository(Articles::class);
 
+        $amount = $request->request->get('amount');
+
         $order = new Orders();
-        $order->setAmount($request->request->get('amount'));
+        $order->setAmount($amount);
         $order->setUserId($request->request->get('user_id'));
         $order->setCreatedAt(null);
         $order->setStatus('panier');
@@ -41,12 +43,13 @@ class OrdersController extends AbstractController
         }
         $em->flush();
 
-        var_dump($_POST);
+        $items = $request->request->get('items');
+
         return $this->render('orders/index.html.twig', [
             'email' => 'test@test.fr',
-            'idOrder' => 1,
-            'items' => 3,
-            'amount' => 100
+            'idOrder' => $order->getId(),
+            'items' => $items,
+            'amount' => $amount
         ]);
     }
 }
