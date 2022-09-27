@@ -8,6 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 
 // Articlerepository&CategoriesRepository pour recuperer ServiceEntityRepository
@@ -17,15 +20,39 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ArticlesController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
-    public function index(): Response
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
     {
+        $this->requestStack = $requestStack;
+    }
+
+    #[Route('/', name: 'app_home')]
+    public function index(ManagerRegistry $doctrine): Response
+    {
+        $session = $this->requestStack->getSession();
+        
+        if ($session->get('isLogged',false))
+        {
+            if ($session->get('user_id',0) == 0)
+            {
+                $email = $session->get('email','');
+                $rep = $doctrine->getRepository(User::class);
+                $user = $rep->findOneBy(['email' => $email]);
+                $userId = $user->getId();
+                $session->set('user_id',$userId);
+            }
+        }
         return $this->render('articles/index.html.twig');
     }
 
     #[Route('/articles', name: 'app_articles')]
     public function ArticleNormalize(ArticlesRepository $articlesRepository): JsonResponse
     {
+        $session = $this->requestStack->getSession();
+        $email = $session->get('email','');
+        $isLogged = $session->get('isLogged',false);
+        $userId = $session->get('user_id',0);
 
         $articles = $articlesRepository->findAll();
         $articlesNormalises = [];
@@ -33,9 +60,9 @@ class ArticlesController extends AbstractController
             $articlesNormalises[] = $this->articleToArray($article);
         }
         $arrayJson = [
-            'isLogged' => true,
-            'email' => 'test@test.fr',
-            'userId' => 2,
+            'isLogged' => $isLogged,
+            'email' => $email,
+            'userId' => $userId,
             'articles' => $articlesNormalises
         ];
         return $this->json($arrayJson);
@@ -44,15 +71,20 @@ class ArticlesController extends AbstractController
     #[Route('/articles/console', name: 'app_console')]
     public function ConsoleNormalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository): JsonResponse
     {
+        $session = $this->requestStack->getSession();
+        $email = $session->get('email','');
+        $isLogged = $session->get('isLogged',false);
+        $userId = $session->get('user_id',0);
+
         $consoles = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(1)));
         $consolesNormalises = [];
         foreach ($consoles as $console) {
             $consolesNormalises[] = $this->articleToArray($console);
         }
         $arrayJson = [
-            'isLogged' => true,
-            'email' => 'test@test.fr',
-            'userId' => 2,
+            'isLogged' => $isLogged,
+            'email' => $email,
+            'userId' => $userId,
             'articles' => $consolesNormalises
         ];
         return $this->json($arrayJson);
@@ -61,15 +93,20 @@ class ArticlesController extends AbstractController
     #[Route('/articles/jeux', name: 'app_jeux')]
     public function Console2Normalize(ArticlesRepository $articlesRepository, CategoriesRepository $categoriesRepository): JsonResponse
     {
+        $session = $this->requestStack->getSession();
+        $email = $session->get('email','');
+        $isLogged = $session->get('isLogged',false);
+        $userId = $session->get('user_id',0);
+
         $jeux = $articlesRepository->findBy(array('Category' => $categoriesRepository->findById(2)));
         $jeuxNormalises = [];
         foreach ($jeux as $jeu) {
             $jeuxNormalises[] = $this->articleToArray($jeu);
         }
         $arrayJson = [
-            'isLogged' => true,
-            'email' => 'test@test.fr',
-            'userId' => 2,
+            'isLogged' => $isLogged,
+            'email' => $email,
+            'userId' => $userId,
             'articles' => $jeuxNormalises
         ];
         return $this->json($arrayJson);

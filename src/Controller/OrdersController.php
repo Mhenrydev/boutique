@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Articles;
 use App\Entity\Orders;
 use App\Entity\Orderslines;
-
+use App\Entity\User;
+use App\Repository\UserRepository;
+use App\Repository\ArticlesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,12 +22,12 @@ class OrdersController extends AbstractController
     {
         $em = $doctrine->getManager();
         $rep = $doctrine->getRepository(Articles::class);
-
+        $repUser = $doctrine->getRepository(User::class);
         $amount = $request->request->get('amount');
 
         $order = new Orders();
         $order->setAmount($amount);
-        $order->setUserId($request->request->get('user_id'));
+        $order->setUser($repUser->find($request->request->get('user_id')));
         $order->setCreatedAt(null);
         $order->setStatus('panier');
 
