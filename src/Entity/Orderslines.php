@@ -17,7 +17,7 @@ class Orderslines
     private ?int $quantity = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderslines')]
-    private ?articles $Article = null;
+    private ?Articles $Article = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderslines')]
     private ?Orders $Orders = null;
