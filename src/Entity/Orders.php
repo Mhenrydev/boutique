@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrdersRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -71,7 +72,12 @@ class Orders
 
     public function setCreatedAt(?\DateTimeImmutable $created_at): self
     {
-        $this->created_at = $created_at;
+        if ($created_at != null) {
+
+            $this->created_at = $created_at;
+        } else {
+            $this->created_at = new DateTimeImmutable();
+        }
 
         return $this;
     }
