@@ -5,6 +5,11 @@
 
 {% block body %}
 	<div class="container-fluid mb-5">
+        {% for message in app.flashes('error') %}
+        <div class = "col">
+            <div class="col"> {{message}}</div>
+        </div>
+        {% endfor %}
 		<div class='row header-1 pb-3'>
 			<div class='col-12 col-sm-2 text-center fs-4 fw-bold pt-2'>LineshoP</div>
 			<div class='col-12 col-sm-6 py-3 text-center text-sm-start'>
@@ -23,7 +28,7 @@
 				</div>
 				<div class='row'>
 					<div class='text-center fw-bold fs-5 pt-2'>
-						{{ items }}
+						{# {{ items }} #}
 					</div>
 				</div>
 			</div>
@@ -35,7 +40,7 @@
 				</div>
 				<div class='row'>
 					<div class='text-center fw-bold fs-5 pt-2'>
-						{{ amount }}
+					{#	{{ amount }} #}
 					</div>
 				</div>
 			</div>
@@ -49,46 +54,20 @@
 	<section class="container">
 		<div class="row">
 			<div class="col">
-				<h1>Mofication profil</h1>
-				{{ form_start(modifyFormProfile) }}
-				{{ form_row(modifyFormProfile.pseudo) }}
-
-				<!-- <form method="post">
+				<h1>Mofication du mot de passe</h1>
+				
+                <form method="post">
 					<div class="form-field">
 						<label for="password">Mot de passe</label>
-						<input type="password" id="password" class="form-control">
+						<input type="password" name="password" id="password" class="form-control">
 					</div>
 					<div class="form-field">
 						<label for="password2">Confirmer Mot de passe</label>
-						<input type="password" id="password2" class="form-control">
+						<input type="password" name="password2" id="password2" class="form-control">
 					</div>
-				</form> -->
-				<fieldset class="my-3">
-					<legend>
-						Identité
-					</legend>
-					{{ form_row(modifyFormProfile.email) }}
-
-					{{ form_row(modifyFormProfile.name_user) }}
-					{{ form_row(modifyFormProfile.firstname) }}
-				</fieldset>
-
-				<fieldset class="mb-3">
-					<legend>
-						Coordonnées
-					</legend>
-					{{ form_row(modifyFormProfile.address) }}
-					{{ form_row(modifyFormProfile.postal_code) }}
-					{{ form_row(modifyFormProfile.city) }}
-
-				</fieldset>
-
-				<button type="submit" class="btn btn-primary my-3">Modifier</button>
-				<button type="submit" class="btn btn-primary my-3"><a href="{{ path('app_pass_modify_user') }}">Modifier mot de passe</a></button>
-				<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
-					<a href="/">Annuler</a>
-				</button>
-				{{ form_end(modifyFormProfile) }}
+                    
+                    <button type="submit" class="btn btn-primary my-3">Valider</button>
+				</form>	
 			</div>
 		</div>
 	</section>
