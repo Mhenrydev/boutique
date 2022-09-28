@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use App\Entity\User;
 use App\Form\ModifyFormProfileType;
 use App\Form\RegistrationFormType;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Doctrine\Persistence\ManagerRegistry;
 
 
 
@@ -116,7 +118,7 @@ class RegistrationController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                
+
                 $entityManager->persist($user);
                 $entityManager->flush();
                 dump($back);
@@ -130,6 +132,43 @@ class RegistrationController extends AbstractController
             'items' => $items,
             'amount' => $amount,
             'form' => $form
+        ]);
+    }
+
+    #[Route('/user/pass/modify', name: 'app_pass_modify_user')]
+    public function editPass(Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, ManagerRegistry $doctrine): Response
+    {
+
+        if ($request->isMethod('POST')) {
+            $session = $this->requestStack->getSession();
+            $userId = $session->get('user_id',0);
+            
+            $user = $userRepository->find($userId);
+
+            $password = $request->request->get('password');
+
+
+            if ( $password == $request->request->get('password2')) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $password
+                    )
+                );
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_home');
+            }else{
+            }
+        }
+        
+
+        return $this->renderForm('registration/editPass.html.twig', [
+            // // 'modifyFormProfile' => $form,
+            // 'items' => $items,
+            // 'amount' => $amount,
+            // // 'form' => $form
         ]);
     }
 
