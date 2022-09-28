@@ -13,12 +13,7 @@ class Body extends React.Component {
     render() {
         return (
             <div>
-                <Header
-                    items={this.props.state.items}
-                    amount={this.props.state.amount}
-                    email={this.props.state.email}
-                    isLogged={this.props.state.isLogged}
-                />
+                <Header state={this.props.state} />
                 <MenuArticles 
                     handleAddAllArticles = {this.props.handleAddAllArticles}
                     handleAddAllConsoles = {this.props.handleAddAllConsoles}

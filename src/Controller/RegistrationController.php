@@ -47,4 +47,13 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+    #[Route('/user/modify/{items}/{amount}', name: 'app_modify_user')]
+    public function modify($items, $amount): Response
+    {
+        return $this->render('registration/modify.html.twig',[
+            'items' => $items,
+            'amount' => $amount
+        ]);
+    }
 }

@@ -23,7 +23,7 @@
 				</div>
 				<div class='row'>
 					<div class='text-center fw-bold fs-5 pt-2'>
-						0
+						{{ items }}
 					</div>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 				</div>
 				<div class='row'>
 					<div class='text-center fw-bold fs-5 pt-2'>
-						0
+						{{ amount }}
 					</div>
 				</div>
 			</div>
@@ -46,47 +46,10 @@
 			</div>
 		</div>
 	</div>
-	<section class="container">
-		<div class="row">
-			<div class="col">
-				<h1>Inscription</h1>
-				{{ form_start(registrationForm) }}
-				{{ form_row(registrationForm.pseudo) }}
-				{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-            }) }}
-
-
-				<fieldset class="my-3">
-					<legend>
-						Identité
-					</legend>
-					{{ form_row(registrationForm.email) }}
-
-					{{ form_row(registrationForm.name_user) }}
-					{{ form_row(registrationForm.firstname) }}
-				</fieldset>
-
-				<fieldset class="mb-3">
-					<legend>
-						Coordonnées
-					</legend>
-					{{ form_row(registrationForm.address) }}
-					{{ form_row(registrationForm.postal_code) }}
-					{{ form_row(registrationForm.city) }}
-
-				</fieldset>
-
-
-				{{ form_row(registrationForm.RGPDConsent) }}
-				<button type="submit" class="btn btn-primary my-3">M'inscrire</button>
-				<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
-					<a href="/">Annuler</a>
-				</button>
-				{{ form_end(registrationForm) }}
-			</div>
-		</div>
-	</section>
-
+	<button class="btn btn-danger mx-0 mx-sm-3 my-3 col-12 col-sm-1">
+		<a href="/">Annuler</a>
+	</button>
+	
+	
 
 {% endblock %}

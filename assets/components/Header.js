@@ -6,11 +6,20 @@ class Header extends React.Component {
     }
 
     displayText() {
-        if (this.props.isLogged) {
+        if (this.props.state.isLogged) {
             return (
                 <div className='text-center'>
-                    Bienvenue {this.props.email}, vous pouvez vous
-                    <a href='logout' className='text-success'> déconnecter</a>.
+                    Bienvenue {this.props.state.email}, vous pouvez vous
+                    <span onClick={this.handleLogout.bind(this)}>
+                        <a href='logout' className='text-success'> déconnecter</a>
+                    </span>
+                    ou modifier vos 
+                    <span onClick={this.handleModifyUserAccount.bind(this)}>
+                        <a 
+                            href={`user/modify/${this.props.state.items}/${this.props.state.amount}`} 
+                            className="text-success"
+                        > informations personnelles</a>.
+                    </span>
                 </div>
             );
         }
@@ -22,6 +31,14 @@ class Header extends React.Component {
                 <a href='register' className='text-success'> créez un compte</a>.
             </div>
         )
+    }
+
+    handleModifyUserAccount() {
+        localStorage.setItem('state',JSON.stringify(this.props.state));
+    }
+
+    handleLogout() {
+        localStorage.clear();
     }
 
     render() {
@@ -45,7 +62,7 @@ class Header extends React.Component {
                         </div>
                         <div className='row'>
                             <div className='text-center fw-bold fs-5 pt-2'>
-                                {this.props.items}
+                                {this.props.state.items}
                             </div>
                         </div>
                     </div>
@@ -57,7 +74,7 @@ class Header extends React.Component {
                         </div>
                         <div className='row'>
                             <div className='text-center fw-bold fs-5 pt-2'>
-                                {this.props.amount}
+                                {this.props.state.amount}
                             </div>
                         </div>
                     </div>

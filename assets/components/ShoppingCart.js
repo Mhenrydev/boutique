@@ -51,7 +51,7 @@ class ShoppingCart extends React.Component {
                     <input type="hidden" name="lineNb" value={lineNb} />
                     <input type="hidden" name="items" value={this.props.items} />
                 </form>
-            </div>
+            </div>            
         );
     }
 }

@@ -5,25 +5,31 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            isLogged: false,
-            articles: {
-                list: [],
-                idArticles: []
-            },
-            items: 0,
-            amount: 0,
-            orderLines: {
-                lines: [],
-                idArticles: []
-            },
-            email: '',
-            userId: 0,
-            displayListArticles: true,
-            displayShoppingChart: false,
-            error: '',
-            msg: ''
-        };
+        if (localStorage.length == 0) {
+            this.state = {
+                isLogged: false,
+                articles: {
+                    list: [],
+                    idArticles: []
+                },
+                items: 0,
+                amount: 0,
+                orderLines: {
+                    lines: [],
+                    idArticles: []
+                },
+                email: '',
+                userId: 0,
+                displayListArticles: true,
+                displayShoppingChart: false,
+                error: '',
+                msg: ''
+            };
+        }
+        else {
+            this.state = JSON.parse(localStorage.getItem('state'));
+        }
+
 
         this.setAllArticles();
         this.handleAddOrderLine = this.handleAddOrderLine.bind(this);
@@ -34,7 +40,6 @@ class Main extends React.Component {
         this.handleAddAllGames = this.handleAddAllGames.bind(this);
         this.handleDisplayListArticles = this.handleDisplayListArticles.bind(this);
         this.handleDisplayShoppingChart = this.handleDisplayShoppingChart.bind(this);
-
     }
 
     buildArticles(articles) {
@@ -64,28 +69,28 @@ class Main extends React.Component {
         if (index > -1) {
             return this.state.articles.list[index];
         }
-        this.setState({error: 'Erreur dans la liste d\'article'});
+        this.setState({ error: 'Erreur dans la liste d\'article' });
     }
 
     updateItems() {
         let items = 0;
 
-        this.setState((state,props) => {
+        this.setState((state, props) => {
             state.orderLines.lines.forEach(line => {
                 items += line.quantity;
             });
-            return {items: items}
+            return { items: items }
         });
     }
 
     updateAmount() {
         let amount = 0;
 
-        this.setState((state,props) => {
+        this.setState((state, props) => {
             state.orderLines.lines.forEach(line => {
                 amount += line.totalPrice;
             });
-            return {amount: amount};
+            return { amount: amount };
         });
     }
 
@@ -117,10 +122,9 @@ class Main extends React.Component {
 
     handleAddOrderLine(idArticle) {
         this.flushMessages();
-        this.setState((state,props) => {
+        this.setState((state, props) => {
             const index = state.orderLines.idArticles.indexOf(idArticle);
-            if (index > -1)
-            {
+            if (index > -1) {
                 state.orderLines.lines[index].quantity++;
                 state.orderLines.lines[index].totalPrice += state.orderLines.lines[index].price;
             }
@@ -145,26 +149,24 @@ class Main extends React.Component {
 
     handleDeleteOrderLine(idArticle) {
         this.flushMessages();
-        this.setState((state,props) => {
+        this.setState((state, props) => {
             const index = state.orderLines.idArticles.indexOf(idArticle);
-            if (index > -1)
-            {
-                state.orderLines.lines.splice(index,1);
-                state.orderLines.idArticles.splice(index,1);
+            if (index > -1) {
+                state.orderLines.lines.splice(index, 1);
+                state.orderLines.idArticles.splice(index, 1);
                 return state;
-            }  
-            this.setState({error: 'Erreur dans la ligne de commande'});
+            }
+            this.setState({ error: 'Erreur dans la ligne de commande' });
         });
         this.updateItems();
         this.updateAmount();
     }
 
-    handleChangeQuantity(idArticle,event) {
+    handleChangeQuantity(idArticle, event) {
         this.flushMessages();
-        this.setState((state,props) => {
+        this.setState((state, props) => {
             const index = state.orderLines.idArticles.indexOf(idArticle);
-            if (index > -1)
-            {
+            if (index > -1) {
                 const quantity = event.target.value.length == 0 ? 0 : parseInt(event.target.value);
                 const price = state.orderLines.lines[index].price;
                 if (quantity >= 0) {
@@ -173,8 +175,8 @@ class Main extends React.Component {
                     return state;
                 }
             } else {
-                this.setState({error: 'Erreur dans la ligne de commande'});
-            } 
+                this.setState({ error: 'Erreur dans la ligne de commande' });
+            }
         });
         this.updateItems();
         this.updateAmount();
@@ -254,17 +256,17 @@ class Main extends React.Component {
     }
 
     render() {
-        return <Body 
-            state={this.state} 
+        return <Body
+            state={this.state}
             handleAddOrderLine={this.handleAddOrderLine}
             handleDeleteOrderLine={this.handleDeleteOrderLine}
-            handleChangeQuantity = {this.handleChangeQuantity}
-            handleAddAllArticles = {this.handleAddAllArticles}
-            handleAddAllConsoles = {this.handleAddAllConsoles}
-            handleAddAllGames = {this.handleAddAllGames}
-            handleDisplayListArticles = {this.handleDisplayListArticles}
-            handleDisplayShoppingChart = {this.handleDisplayShoppingChart}
-            />;
+            handleChangeQuantity={this.handleChangeQuantity}
+            handleAddAllArticles={this.handleAddAllArticles}
+            handleAddAllConsoles={this.handleAddAllConsoles}
+            handleAddAllGames={this.handleAddAllGames}
+            handleDisplayListArticles={this.handleDisplayListArticles}
+            handleDisplayShoppingChart={this.handleDisplayShoppingChart}
+        />;
     }
 }
 
