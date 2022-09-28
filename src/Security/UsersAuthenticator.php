@@ -31,7 +31,6 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
-
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
@@ -47,7 +46,7 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->request->get('email', '');
         $session = $this->requestStack->getSession();
-        $session->set('email',$email);
+        strlen($email) > 0 ? $session->set('email',$email) : true;
         $session->set('isLogged',true);
         
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
@@ -63,4 +62,11 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
+/*
+    public function onAuthenticationFailure(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        $session = $this->requestStack->getSession();
+        $session->remove('email');
+    }
+    */
 }

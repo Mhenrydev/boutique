@@ -13,9 +13,16 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
@@ -35,6 +42,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
+            $session = $this->requestStack->getSession();
+            $session->set('email',$user->getEmail());
 
             return $userAuthenticator->authenticateUser(
                 $user,
@@ -51,9 +60,15 @@ class RegistrationController extends AbstractController
     #[Route('/user/modify/{items}/{amount}', name: 'app_modify_user')]
     public function modify($items, $amount): Response
     {
-        return $this->render('registration/modify.html.twig',[
+        $user = new User();
+        $form = $this->createFormBuilder($user)
+            ->add('email',TextType::class)
+            ->getForm();
+
+        return $this->renderForm('registration/modify.html.twig',[
             'items' => $items,
-            'amount' => $amount
+            'amount' => $amount,
+            'form' => $form
         ]);
     }
 }
