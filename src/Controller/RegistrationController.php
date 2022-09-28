@@ -65,8 +65,8 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/user/modify/{items}/{amount}', name: 'app_modify_user')]
-    public function modify( $items, $amount, Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager): Response
+    #[Route('/user/modify/{items}/{amount}/{back?home}', name: 'app_modify_user')]
+    public function modify( $items, $amount, $back, Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager): Response
     {
         $session = $this->requestStack->getSession();
         $userId = $session->get('user_id',0);
@@ -119,8 +119,9 @@ class RegistrationController extends AbstractController
                 
                 $entityManager->persist($user);
                 $entityManager->flush();
-
-                return $this->redirectToRoute('app_home');
+                dump($back);
+                return $this->redirectToRoute('app_' . $back);
+                //return $this->render('base.html.twig');
             }
 
         

@@ -12,28 +12,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Persistence\ManagerRegistry;
 
 class OrdersController extends AbstractController
 {
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     #[Route('/order', name: 'app_orders')]
     public function index(Request $request, ManagerRegistry $doctrine): Response
     {
+        $session = $this->requestStack->getSession();
+
         $em = $doctrine->getManager();
         $rep = $doctrine->getRepository(Articles::class);
         $repUser = $doctrine->getRepository(User::class);
+        
         $amount = $request->request->get('amount');
+        $session->set('amount',$amount);
+
+        $user = $repUser->find($request->request->get('user_id'));
 
         $order = new Orders();
         $order->setAmount($amount);
-        $order->setUser($repUser->find($request->request->get('user_id')));
+        $order->setUser($user);
         $order->setCreatedAt(null);
         $order->setStatus('panier');
 
         $em->persist($order);
         $em->flush();
-        // $idOrder = $order->getId();
 
         $lineNb = $request->request->get('lineNb');
         for ($i = 1; $i <= $lineNb; $i++) {
@@ -46,9 +58,11 @@ class OrdersController extends AbstractController
         $em->flush();
 
         $items = $request->request->get('items');
+        $session->set('items',$items);
+        $session->set('idOrder',$order->getId());
 
         return $this->render('orders/index.html.twig', [
-            'email' => 'test@test.fr',
+            'email' => $user->getEmail(),
             'idOrder' => $order->getId(),
             'items' => $items,
             'amount' => $amount
@@ -64,5 +78,22 @@ class OrdersController extends AbstractController
 
 
         return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/payment', name: 'app_payment')]
+    public function show(): Response
+    {
+        $session = $this->requestStack->getSession();
+        $items = $session->get('items',0);
+        $amount = $session->get('amount',0);
+        $idOrder = $session->get('idOrder');
+        $email = $session->get('email','');
+
+        return $this->render('orders/index.html.twig', [
+            'email' => $email,
+            'idOrder' => $idOrder,
+            'items' => $items,
+            'amount' => $amount
+        ]);
     }
 }

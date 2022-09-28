@@ -62,11 +62,4 @@ class UsersAuthenticator extends AbstractLoginFormAuthenticator
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
-/*
-    public function onAuthenticationFailure(Request $request, TokenInterface $token, string $firewallName): ?Response
-    {
-        $session = $this->requestStack->getSession();
-        $session->remove('email');
-    }
-    */
 }
