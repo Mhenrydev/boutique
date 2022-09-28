@@ -46,10 +46,44 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn btn-danger mx-0 mx-sm-3 my-3 col-12 col-sm-1">
-		<a href="/">Annuler</a>
-	</button>
-	
-	
+	<section class="container">
+		<div class="row">
+			<div class="col">
+				<h1>Mofication profil</h1>
+				{{ form_start(modifyFormProfile) }}
+				{{ form_row(modifyFormProfile.pseudo) }}
+				
+				{# {{ form_row(modifyFormProfile.plainPassword, {
+            label: 'Password'
+            }) }} #}
 
+
+				<fieldset class="my-3">
+					<legend>
+						Identité
+					</legend>
+					{{ form_row(modifyFormProfile.email) }}
+
+					{{ form_row(modifyFormProfile.name_user) }}
+					{{ form_row(modifyFormProfile.firstname) }}
+				</fieldset>
+
+				<fieldset class="mb-3">
+					<legend>
+						Coordonnées
+					</legend>
+					{{ form_row(modifyFormProfile.address) }}
+					{{ form_row(modifyFormProfile.postal_code) }}
+					{{ form_row(modifyFormProfile.city) }}
+
+				</fieldset>
+
+				<button type="submit" class="btn btn-primary my-3">Modifier</button>
+				<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
+					<a href="/">Annuler</a>
+				</button>
+				{{ form_end(modifyFormProfile) }}
+			</div>
+		</div>
+	</section>
 {% endblock %}

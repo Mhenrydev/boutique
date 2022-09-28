@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+// use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\User;
+use App\Form\ModifyFormProfileType;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\UsersAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +18,19 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+
 
 class RegistrationController extends AbstractController
 {
+
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, UsersAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
@@ -49,11 +64,70 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/user/modify/{items}/{amount}', name: 'app_modify_user')]
-    public function modify($items, $amount): Response
+    public function modify( $items, $amount, Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager): Response
     {
-        return $this->render('registration/modify.html.twig',[
+        $session = $this->requestStack->getSession();
+        $userId = $session->get('user_id',0);
+        
+        $user = $userRepository->find($userId);
+        
+        $form = $this->createForm(RegistrationFormType::class, $user);
+
+        $form = $this->createFormBuilder($user)
+            ->add('email', EmailType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('pseudo', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('name_user', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('firstname', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('address', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('postal_code', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add('city', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->getForm();
+            
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_home');
+            }
+
+        
+        return $this->renderForm('registration/modify.html.twig', [
+            'modifyFormProfile' => $form,
             'items' => $items,
             'amount' => $amount
         ]);
     }
+
+    
 }
