@@ -19,8 +19,8 @@ class Body extends React.Component {
                     handleAddAllConsoles = {this.props.handleAddAllConsoles}
                     handleAddAllGames = {this.props.handleAddAllGames}
                 />
-                <div>{this.props.state.msg}</div>
-                <div className='text-danger'>{this.props.state.error}</div>
+                <div className='mx-0 mx-sm-3 my-2 text-success'>{this.props.state.msg}</div>
+                <div className='mx-0 mx-sm-3 my-2 text-danger'>{this.props.state.error}</div>
                 {this.props.state.displayListArticles &&
                     <div>
                         <ListArticles

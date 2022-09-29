@@ -59,11 +59,15 @@ class ArticlesController extends AbstractController
         foreach ($articles as $article) {
             $articlesNormalises[] = $this->articleToArray($article);
         }
+        $msg = $session->get('msg','');
+        $session->remove('msg');
+
         $arrayJson = [
             'isLogged' => $isLogged,
             'email' => $email,
             'userId' => $userId,
-            'articles' => $articlesNormalises
+            'articles' => $articlesNormalises,
+            'msg' => $msg
         ];
         return $this->json($arrayJson);
     }
@@ -81,11 +85,15 @@ class ArticlesController extends AbstractController
         foreach ($consoles as $console) {
             $consolesNormalises[] = $this->articleToArray($console);
         }
+        $msg = $session->get('msg','');
+        $session->remove('msg');
+
         $arrayJson = [
             'isLogged' => $isLogged,
             'email' => $email,
             'userId' => $userId,
-            'articles' => $consolesNormalises
+            'articles' => $consolesNormalises,
+            'msg' => $msg
         ];
         return $this->json($arrayJson);
     }
@@ -103,11 +111,15 @@ class ArticlesController extends AbstractController
         foreach ($jeux as $jeu) {
             $jeuxNormalises[] = $this->articleToArray($jeu);
         }
+        $msg = $session->get('msg','');
+        $session->remove('msg');
+
         $arrayJson = [
             'isLogged' => $isLogged,
             'email' => $email,
             'userId' => $userId,
-            'articles' => $jeuxNormalises
+            'articles' => $jeuxNormalises,
+            'msg' => $msg
         ];
         return $this->json($arrayJson);
     }

@@ -75,7 +75,7 @@ class RegistrationController extends AbstractController
         
         $user = $userRepository->find($userId);
         
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        //$form = $this->createForm(RegistrationFormType::class, $user);
 
         $form = $this->createFormBuilder($user)
             ->add('email', EmailType::class, [
@@ -121,26 +121,31 @@ class RegistrationController extends AbstractController
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                dump($back);
+                
+                $session->set('msg','Profil utilisateur modifié');
+
                 return $this->redirectToRoute('app_' . $back);
-                //return $this->render('base.html.twig');
             }
 
-        
+        $msg = $session->get('msg','');
+        $session->remove('msg');
+
         return $this->renderForm('registration/modify.html.twig', [
             'modifyFormProfile' => $form,
             'items' => $items,
             'amount' => $amount,
-            'form' => $form
+            'form' => $form,
+            'back' => $back,
+            'msg' => $msg
         ]);
     }
 
-    #[Route('/user/pass/modify', name: 'app_pass_modify_user')]
-    public function editPass(Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, ManagerRegistry $doctrine): Response
+    #[Route('/user/pass/modify/{items}/{amount}/{back}', name: 'app_pass_modify_user')]
+    public function editPass($items,$amount,$back,Request $request, UserRepository $userRepository,  EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, ManagerRegistry $doctrine): Response
     {
+        $session = $this->requestStack->getSession();
 
         if ($request->isMethod('POST')) {
-            $session = $this->requestStack->getSession();
             $userId = $session->get('user_id',0);
             
             $user = $userRepository->find($userId);
@@ -158,17 +163,34 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('app_home');
-            }else{
+                $session->set('msg','Mot de passe modifié');
+
+                return $this->redirectToRoute('app_modify_user',[
+                    'items' => $items,
+                    'amount' => $amount,
+                    'back' => $back
+                ]);
+            }
+            else 
+            {
+                $session->set('error','Mot de passe incorrect');
+                
+                return $this->redirectToRoute('app_pass_modify_user',[
+                    'items' => $items,
+                    'amount' => $amount,
+                    'back' => $back
+                ]);
             }
         }
         
+        $error = $session->get('error','');
+        $session->remove('error');
 
-        return $this->renderForm('registration/editPass.html.twig', [
-            // // 'modifyFormProfile' => $form,
-            // 'items' => $items,
-            // 'amount' => $amount,
-            // // 'form' => $form
+        return $this->render('registration/editPass.html.twig', [
+            'items' => $items,
+            'amount' => $amount,
+            'back' => $back,
+            'error' => $error
         ]);
     }
 

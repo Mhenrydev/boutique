@@ -11,7 +11,7 @@ class Header extends React.Component {
                 <div className='text-center'>
                     Bienvenue {this.props.state.email}, vous pouvez vous
                     <span onClick={this.handleLogout.bind(this)}>
-                        <a href='logout' className='text-success'> déconnecter</a>
+                        <a href='logout' className='text-success'> déconnecter </a>
                     </span>
                     ou modifier vos 
                     <span onClick={this.handleModifyUserAccount.bind(this)}>

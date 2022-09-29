@@ -50,19 +50,11 @@
 		<div class="row">
 			<div class="col">
 				<h1>Mofication profil</h1>
+
+				<div class="text-success">{{ msg }}</div>
 				{{ form_start(modifyFormProfile) }}
 				{{ form_row(modifyFormProfile.pseudo) }}
 
-				<!-- <form method="post">
-					<div class="form-field">
-						<label for="password">Mot de passe</label>
-						<input type="password" id="password" class="form-control">
-					</div>
-					<div class="form-field">
-						<label for="password2">Confirmer Mot de passe</label>
-						<input type="password" id="password2" class="form-control">
-					</div>
-				</form> -->
 				<fieldset class="my-3">
 					<legend>
 						Identité
@@ -84,9 +76,9 @@
 				</fieldset>
 
 				<button type="submit" class="btn btn-primary my-3">Modifier</button>
-				<button type="submit" class="btn btn-primary my-3"><a href="{{ path('app_pass_modify_user') }}">Modifier mot de passe</a></button>
+				<button type="submit" class="btn btn-primary my-3"><a href='{{"/user/pass/modify/#{items}/#{amount}/#{back}" }}'>Modifier mot de passe</a></button>
 				<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
-					<a href="/">Annuler</a>
+					<a href="{{ path("app_#{back}") }}">Annuler</a>
 				</button>
 				{{ form_end(modifyFormProfile) }}
 			</div>

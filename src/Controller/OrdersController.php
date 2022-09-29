@@ -60,23 +60,29 @@ class OrdersController extends AbstractController
         $items = $request->request->get('items');
         $session->set('items',$items);
         $session->set('idOrder',$order->getId());
+        $msg = $session->get('msg','');
+        $session->remove('msg');
 
         return $this->render('orders/index.html.twig', [
             'email' => $user->getEmail(),
             'idOrder' => $order->getId(),
             'items' => $items,
-            'amount' => $amount
+            'amount' => $amount,
+            'msg' => $msg
         ]);
     }
 
     #[Route('/order/delete/{id}', name: 'app_order_delete')]
     public function deleteOrder(Orders $order, ManagerRegistry $doctrine): Response
     {
+        $session = $this->requestStack->getSession();
+
         $em = $doctrine->getManager();
         $em->remove($order);
         $em->flush();
-
-
+        
+        $session->set('msg','Commande annulée');
+        
         return $this->redirectToRoute('app_home');
     }
 
@@ -88,12 +94,15 @@ class OrdersController extends AbstractController
         $amount = $session->get('amount',0);
         $idOrder = $session->get('idOrder');
         $email = $session->get('email','');
+        $msg = $session->get('msg','');
+        $session->remove('msg');
 
         return $this->render('orders/index.html.twig', [
             'email' => $email,
             'idOrder' => $idOrder,
             'items' => $items,
-            'amount' => $amount
+            'amount' => $amount,
+            'msg' => $msg
         ]);
     }
 }

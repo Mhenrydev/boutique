@@ -107,7 +107,8 @@ class Main extends React.Component {
                 if (event.target.response.isLogged) {
                     this.setState({
                         userId: event.target.response.userId,
-                        email: event.target.response.email
+                        email: event.target.response.email,
+                        msg: event.target.response.msg
                     });
                 }
             });
