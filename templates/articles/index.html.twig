@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lineshop
+{% block title %}
+Lineshop
 {% endblock %}
 
 {% block body %}
 	<div id="root"></div>
+	<a href="{{ path('admin') }}" class='btn btn-danger'>Admin dashboard</a>
 {% endblock %}

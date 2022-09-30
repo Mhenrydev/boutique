@@ -50,6 +50,9 @@ class Articles
     private ?int $rating = null;
     # @Groups("article:read")
 
+    #[ORM\Column]
+    private ?int $categoryId = null;
+
     public function __construct()
     {
         $this->orderslines = new ArrayCollection();
@@ -94,6 +97,17 @@ class Articles
         $this->price = $price;
 
         return $this;
+    }
+    public function setCategoryId(int $categoryId): self
+    {
+        $this->categoryId = $categoryId;
+
+        return $this;
+    }
+    
+    public function getCategoryId(): ?int
+    {
+        return $this->categoryId;
     }
 
     public function getDescription(): ?string
