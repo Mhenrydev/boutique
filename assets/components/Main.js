@@ -4,8 +4,7 @@ import Body from './Body';
 class Main extends React.Component {
     constructor(props) {
         super(props);
-
-        //if (localStorage.length == 0) {
+        if (localStorage.length == 0) {
             this.state = {
                 isLogged: false,
                 articles: {
@@ -25,10 +24,11 @@ class Main extends React.Component {
                 error: '',
                 msg: ''
             };
-      //  }
-       // else {
-           // this.state = JSON.parse(localStorage.getItem('state'));
-        //}
+            localStorage.setItem('state',JSON.stringify(this.state));
+       }
+       else {
+           this.state = JSON.parse(localStorage.getItem('state'));
+        }
 
 
         this.setAllArticles();

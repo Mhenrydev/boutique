@@ -34,11 +34,11 @@ class Header extends React.Component {
     }
 
     handleModifyUserAccount() {
-        //localStorage.setItem('state',JSON.stringify(this.props.state));
+        localStorage.setItem('state',JSON.stringify(this.props.state));
     }
 
     handleLogout() {
-        //localStorage.clear();
+        localStorage.clear();
     }
 
     render() {
