@@ -6,6 +6,7 @@ use App\Entity\Articles;
 use App\Entity\Categories;
 use App\Entity\User;
 use App\Entity\Orders;
+use App\Entity\Orderslines;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -48,7 +49,7 @@ class DashboardController extends AbstractDashboardController
         MenuItem::linkToCrud('Categories', 'fas fa-newspaper', Categories::class),
         MenuItem::linkToCrud('Users', 'fas fa-user', User::class),
         MenuItem::linkToCrud('Orders', 'fas fa-user', Orders::class),
-        
+        MenuItem::linkToCrud('Orderslines', 'fas fa-user', Orderslines::class),
         ];
     }
 
