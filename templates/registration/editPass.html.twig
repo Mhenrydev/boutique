@@ -35,7 +35,7 @@
 				</div>
 				<div class='row'>
 					<div class='text-center fw-bold fs-5 pt-2'>
-					{{ amount }}
+						{{ amount }}
 					</div>
 				</div>
 			</div>
@@ -50,9 +50,9 @@
 		<div class="row">
 			<div class="col">
 				<h1>Modification du mot de passe</h1>
-				
+
 				<div class="text-danger">{{ error }}</div>
-                <form method="post">
+				<form method="post">
 					<div class="form-field">
 						<label for="password">Mot de passe</label>
 						<input type="password" name="password" id="password" class="form-control">
@@ -61,13 +61,16 @@
 						<label for="password2">Confirmer Mot de passe</label>
 						<input type="password" name="password2" id="password2" class="form-control">
 					</div>
-                    
-                    <button type="submit" class="btn btn-primary my-3">Valider</button>
+
+					<button type="submit" class="btn btn-primary my-3">Valider</button>
 					<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
-					<a href='{{"/user/modify/#{items}/#{amount}/#{back}" }}'>Annuler</a>
-				</button>
-				</form>	
+						<a href='{{"/user/modify/#{items}/#{amount}/#{back}" }}'>Annuler</a>
+					</button>
+				</form>
 			</div>
 		</div>
 	</section>
+	<div class="footer fixed-bottom py-3">
+		<a class='mx-0 mx-sm-3 text-white' href="/dev/admin">Page d'administration</a>
+	</div>
 {% endblock %}

@@ -76,7 +76,11 @@
 				</fieldset>
 
 				<button type="submit" class="btn btn-primary my-3">Modifier</button>
-				<button type="submit" class="btn btn-primary my-3"><a href='{{"/user/pass/modify/#{items}/#{amount}/#{back}" }}'>Modifier mot de passe</a></button>
+				<div class="btn btn-primary my-3">
+					<a href='{{"/user/pass/modify/#{items}/#{amount}/#{back}" }}' class="text-white">
+						Modifier mot de passe
+					</a>
+				</div>
 				<button class="btn btn-danger mx-0 my-1 col-12 col-sm-1">
 					<a href="{{ path("app_#{back}") }}">Annuler</a>
 				</button>
@@ -84,4 +88,7 @@
 			</div>
 		</div>
 	</section>
+	<div class="footer py-3">
+		<a class='mx-0 mx-sm-3 text-white' href="/dev/admin">Page d'administration</a>
+	</div>
 {% endblock %}
